@@ -48,6 +48,7 @@ def format_big_number(num):
     else:
         return f"{num:.2f}"
 
+
 mx_sales, mx_order, mx_customer, mx_profit_pct = st.columns(4)
 #
 with mx_sales:
@@ -83,7 +84,7 @@ with mx_profit_pct:
     st.metric("profit_pct", value=format_big_number(curr_profit_pct), delta=f'{profit_pct_diff_pct:.2f}%')
 
 
-st.header("Sales trend")
+st.subheader("Sales Trend")
 freq = st.selectbox("Freq", ['Harian','Bulanan'])
 
 timeUnit = {
@@ -108,15 +109,42 @@ st.altair_chart(sales_line,use_container_width=True)
 # Bikin 4 kolom berisi sales dari tiap kategori
 # Setiap kolom mewakili region yang berbeda
 #Bar Chart
+st.subheader("Sales Category")
 bar_chart = alt.Chart(df[df['order_year']==CURR_YEAR]).mark_bar().encode(
             column="category:N",
             y="sum(sales):Q",
             color="segment:N",
             x="segment:N"
-        ).properties(width=360, height=200)
+        ).properties(width=300, height=180)
 
 st.altair_chart(bar_chart)
 
-st.header("Sales")
+
+st.subheader("Sales vs Profit Correlation")
+tab1, tab2 = st.tabs(['Current Year', 'Previous Year'])
+
+with tab1:
+    _, midcol, _ = st.columns([1, 2, 1])
+
+    with midcol:
+        scatter = alt.Chart(df[df['order_year'] == CURR_YEAR]).mark_point().encode(
+            x="sales:Q",
+            y="profit:Q",
+            color="region:N",
+        )
+    st.altair_chart(scatter, theme="streamlit", use_container_width=True)
+with tab2:
+    _, midcol, _ = st.columns([1, 2, 1])
+
+    with midcol:
+        scatter = alt.Chart(df[df['order_year'] == PREV_YEAR]).mark_point().encode(
+            x="sales:Q",
+            y="profit:Q",
+            color="region:N",
+        )
+    st.altair_chart(scatter, theme="streamlit", use_container_width=True)
+
+#st.altair_chart(scatter,use_container_width=True)
+
 
 
