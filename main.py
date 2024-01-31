@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 
 
-st.set_page_config(page_title = "Penggunaan Streamlit",layout='wide')
+st.set_page_config(page_title = "Supastore Streamlit Dashboard",layout='wide')
 
 df = pd.read_csv('https://docs.google.'
                  'com/spreadsheets/d/e/'
