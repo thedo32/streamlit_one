@@ -115,9 +115,9 @@ bar_chart = alt.Chart(df[df['order_year']==CURR_YEAR]).mark_bar().encode(
             y="sum(sales):Q",
             color="segment:N",
             x="segment:N"
-        )
+        ).properties(width=300, height=180)
 
-st.altair_chart(bar_chart, use_container_width=True)
+st.altair_chart(bar_chart)
 
 
 st.subheader("Sales vs Profit Correlation")
